@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Camera Display</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+        }
+        
+        canvas,
+        video {
+            width: 100vw;
+            height: 100vh;
+            margin: auto;
+            /* filter: blur(5px); */
+            /* filter: grayscale(100%); */
+            /* filter: contrast(130%); */
+            /* filter: contrast(70%); */
+            /* filter: brightness(130%); */
+            /* filter: brightness(70%); */
+            /* filter: saturate(50%); */
+            /* filter: invert(100%); */
+            /* filter: hue-rotate(90deg); */
+            /* filter: sepia(100%); */
+            /* filter: drop-shadow(5px 5px 10px #1a237e); */
+            /* filter: opacity(70%); */
+            /* filter: brightness(80%) saturate(170%); */
+        }
+        
+        .telop {
+            position: absolute;
+            top: 10vh;
+            left: 10vw;
+            font-size: 60px;
+            background-color: transparent;
+            color: white;
+            border: none;
+            text-align: center;
+            width: 80vw;
+            height: 80vh;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <video id="camera"></video>
+    <textarea type="text" class="telop"></textarea>
+    <script>
+        window.onload = () => {
+            const video = document.querySelector("#camera");
+
+            /** カメラ設定 */
+            const constraints = {
+                audio: false,
+                video: {
+                    width: 1280,
+                    height: 720,
+                    facingMode: "user", // フロントカメラを利用する
+                    // facingMode: { exact: "environment" }  // リアカメラを利用する場合
+                },
+            };
+
+            /**
+             * カメラを<video>と同期
+             */
+            navigator.mediaDevices
+                .getUserMedia(constraints)
+                .then((stream) => {
+                    video.srcObject = stream;
+                    video.onloadedmetadata = (e) => {
+                        video.play();
+                    };
+                })
+                .catch((err) => {
+                    console.log(err.name + ": " + err.message);
+                });
+        };
+    </script>
+</body>
+
+</html>
